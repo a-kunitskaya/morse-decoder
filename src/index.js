@@ -38,7 +38,24 @@ const MORSE_TABLE = {
 };
 
 function decode(expr) {
-    // write your solution here
+    const chunks = expr.match(/.{10}/g);
+    let result = '';
+
+    chunks.forEach(chunk => {
+        if (chunk === '**********') {
+            result += chunk;
+        }else {
+            const noZerosAtBeginning = chunk.substr(chunk.indexOf('1'));
+            const morseChars = noZerosAtBeginning.match(/.{2}/g);
+            let morseCode = '';
+            morseChars.forEach(char => {
+                morseCode += char === '10' ? '.' : '-';
+            });
+            result += MORSE_TABLE[morseCode];
+        }
+    });
+
+    return result.replace(/[*]{10}/g, ' ');
 }
 
 module.exports = {
