@@ -43,19 +43,19 @@ function decode(expr) {
 
     chunks.forEach(chunk => {
         if (chunk === '**********') {
-            result += chunk;
-        }else {
-            const noZerosAtBeginning = chunk.substr(chunk.indexOf('1'));
-            const morseChars = noZerosAtBeginning.match(/.{2}/g);
-            let morseCode = '';
-            morseChars.forEach(char => {
-                morseCode += char === '10' ? '.' : '-';
-            });
+            result += ' ';
+        } else {
+            const leftZerosRemoved = chunk.substr(chunk.indexOf('1'));
+            const morseChars = leftZerosRemoved.match(/.{2}/g);
+            const morseCode = morseChars.reduce((acc, char) => {
+                acc += char === '10' ? '.' : '-';
+                return acc;
+            }, '');
             result += MORSE_TABLE[morseCode];
         }
     });
 
-    return result.replace(/[*]{10}/g, ' ');
+    return result;
 }
 
 module.exports = {
